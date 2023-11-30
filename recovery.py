@@ -35,8 +35,8 @@ def upload_to_ftp(backup_file, ftp_host, ftp_user, ftp_pass, ftp_path):
             logging.info(f"Uploaded {os.path.basename(backup_file)} to FTP")
 
 def main():
-    source_directory = '/var/www/cookie_site/'
-    backup_directory = '/home/misha/sites/'
+    source_directory = ''
+    backup_directory = ''
     ignored_dirs = ['*.git*', '*phpmyadmin*']  # Adjust patterns to ignore here
 
     backup_file = create_backup(source_directory, backup_directory, ignored_dirs)
