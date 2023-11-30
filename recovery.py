@@ -42,10 +42,10 @@ def main():
     backup_file = create_backup(source_directory, backup_directory, ignored_dirs)
 
     if backup_file:
-        ftp_host = '192.168.1.229'
-        ftp_user = 'misha'
-        ftp_pass = 'mi1352m'
-        ftp_directory = '/home/misha/sites/'  # Change this to the desired directory in FTP
+        ftp_host = ''
+        ftp_user = ''
+        ftp_pass = ''
+        ftp_directory = ''  # Change this to the desired directory in FTP
 
         upload_to_ftp(backup_file, ftp_host, ftp_user, ftp_pass, ftp_directory)
     else:
