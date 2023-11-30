@@ -7,7 +7,8 @@ import logging
 
 def create_backup(source_directory, backup_dir, ignored_dirs):
     ignore_file = os.path.join(source_directory, ".ignore")
-    if os.path.exists(ignore_file):
+    if os.path.isfile(ignore_file):
+        logging.info(f"Ignore file found in {source_directory}. Backup ignored.")
         return None
 
     today = datetime.now().strftime('%d.%m.%Y.%H:%M')
@@ -31,7 +32,7 @@ def upload_to_ftp(backup_file, ftp_host, ftp_user, ftp_pass, ftp_path):
 
         with open(backup_file, 'rb') as file:
             ftp.storbinary(f"STOR {os.path.basename(backup_file)}", file)
-            print(f"Uploaded {os.path.basename(backup_file)} to FTP")
+            logging.info(f"Uploaded {os.path.basename(backup_file)} to FTP")
 
 def main():
     source_directory = '/var/www/cookie_site/'
@@ -48,17 +49,16 @@ def main():
 
         upload_to_ftp(backup_file, ftp_host, ftp_user, ftp_pass, ftp_directory)
     else:
-        logging.info("Backup canceled due to an ignore file.")
+        logging.info("No backup created due to ignore file.")
 
 if __name__ == "__main__":
-    # Configure logging to save logs to recovery_log.txt
     log_file = 'recovery_log.txt'
     logging.basicConfig(filename=log_file, level=logging.INFO,
                         format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
     try:
         main()
-        if not os.path.exists(log_file):
-            logging.info("Recovery process completed successfully.")
+        logging.info("Recovery process completed.")
+        logging.info("--------------------------------------------------------")
     except Exception as e:
         logging.error(f"An error occurred during recovery: {str(e)}")
